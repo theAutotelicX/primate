@@ -85,7 +85,12 @@ ipcBridge.onResponse('Read-Default-Connection', (connection) => {
          * @param {ViewFrameProvider} vfProvider - The view frame provider.
          */
         const configure = (restProvider, vfProvider) => {
-            const options = {host: `${connection.protocol}://${connection.adminHost}:${adminPort}`};
+            const parts = `${connection.adminHost}`.split("/")
+            const hostname = parts[0];
+            let path = ""
+            if (parts.slice(1).length == 0) path = parts.slice(1).join("/");
+            else path = "/" + parts.slice(1).join("/");
+            const options = {host: `${connection.protocol}://${hostname}:${adminPort}${path}`};
 
             if (isObject(connection.basicAuth) && connection.basicAuth.credentials.length >= 2) {
                 options.authorization = connection.basicAuth.credentials;
@@ -98,7 +103,7 @@ ipcBridge.onResponse('Read-Default-Connection', (connection) => {
                     sessionId: connection.id,
                     sessionName: connection.name,
                     sessionColor: connection.colorCode,
-                    sessionURL: `${connection.protocol}://${connection.adminHost}:${adminPort}`
+                    sessionURL: `${connection.protocol}://${hostname}:${adminPort}${path}`
                 },
                 state: {
                     layoutName: 'bootstrap'

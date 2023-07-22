@@ -115,13 +115,18 @@ export default function ClientSetupController(scope, restClient, viewFrame, toas
         eventLocks.submitSetupForm = true;
         viewFrame.setLoaderSteps(1);
 
-        const url = `${setupModel.protocol}://${setupModel.adminHost}:${setupModel.adminPort}`;
+        // modify to add custom path
+        const parts = `${setupModel.adminHost}`.split("/")
+        const hostname = parts[0];
+        let path = ""
+        if (parts.slice(1).length == 0) path = parts.slice(1).join("/");
+        else path = "/" + parts.slice(1).join("/");
+        const url = `${setupModel.protocol}://${hostname}:${setupModel.adminPort}${path}`;
         const options = {method: 'GET', headers: {}, url};
 
         if (scope.credentials.username.length >= 1) {
             const {credentials} = scope;
-
-            options.headers['Authorization'] = btoa(`${credentials.username}:${credentials.password}`);
+            options.headers['Authorization'] = 'Basic ' + btoa(`${credentials.username}:${credentials.password}`);
             scope.setupModel.basicAuth.credentials = options.headers['Authorization'];
         }
 

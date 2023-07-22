@@ -158,7 +158,12 @@ ipcBridge.onResponse('Read-Session-Connection', (connection) => {
 
     const adminPort = parseNumeric(connection.adminPort, 8001);
 
-    responseLocker.host = `${connection.protocol}://${connection.adminHost}:${adminPort}`;
+    const parts = `${connection.adminHost}`.split("/")
+    const hostname = parts[0];
+    let path = ""
+    if (parts.slice(1).length == 0) path = parts.slice(1).join("/");
+    else path = "/" + parts.slice(1).join("/");
+    responseLocker.host = `${connection.protocol}://${hostname}:${adminPort}${path}`;
     responseLocker.basicAuth = connection.basicAuth;
 
     responseLocker.config.sessionId = connection.id;

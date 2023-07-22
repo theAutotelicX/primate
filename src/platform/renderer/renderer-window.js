@@ -101,9 +101,10 @@ class RendererWindow {
         try {
             await this._window.loadFile(path.join(WORKBENCH_PATH, 'bootstrap.html'));
 
-            if (this._debug === true) {
-                this._window.webContents.openDevTools();
-            }
+            this._window.webContents.openDevTools();
+            // if (this._debug === true) {
+            //     this._window.webContents.openDevTools();
+            // }
         } catch (error) {
             throw new Error(`Unable to load bootstrap HTML file. ${error.message}`);
         }

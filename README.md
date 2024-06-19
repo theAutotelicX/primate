@@ -13,7 +13,7 @@
 |-----------------|--------------------------|
 | 1.0.0           | `2.7.x` `2.8.x` `3.0-3.3`|
 
-## Changelog
+## Changelog (for this fork)
 
 * Primate is now support loopback authentication (currently only support basic authentication)
 * Using http://proxy:8000/admin in Manage connection screen is supported
